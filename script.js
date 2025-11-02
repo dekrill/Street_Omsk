@@ -17,7 +17,6 @@ class NotificationManager {
     }
     
     init() {
-        // Создаем контейнер для уведомлений, если его нет
         this.container = document.getElementById('notification-container');
         if (!this.container) {
             this.container = document.createElement('div');
@@ -30,7 +29,7 @@ class NotificationManager {
         }
     }
     
-    show(message, type = 'info', duration = 3000) {
+    show(message, type = 'info', duration = 5000) {
         // Удаляем предыдущее уведомление
         this.hide();
         
@@ -38,10 +37,8 @@ class NotificationManager {
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.innerHTML = `
-            <div class="notification-content">
-                ${message}
-                <button class="notification-close" onclick="notificationManager.hide()">&times;</button>
-            </div>
+            <div class="notification-content">${message}</div>
+            <button class="notification-close" onclick="notificationManager.hide()">&times;</button>
         `;
         
         // Добавляем в контейнер
@@ -65,12 +62,13 @@ class NotificationManager {
     
     hide() {
         if (this.currentNotification && this.currentNotification.parentNode) {
-            this.currentNotification.classList.remove('show');
-            this.currentNotification.classList.add('hiding');
+            const notification = this.currentNotification;
+            notification.classList.remove('show');
+            notification.classList.add('hiding');
             
             setTimeout(() => {
-                if (this.currentNotification && this.currentNotification.parentNode) {
-                    this.currentNotification.parentNode.removeChild(this.currentNotification);
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
                 }
                 this.currentNotification = null;
             }, 300);
@@ -83,7 +81,7 @@ class NotificationManager {
     }
     
     // Быстрые методы для разных типов уведомлений
-    success(message, duration = 3000) {
+    success(message, duration = 5000) {
         return this.show(message, 'success', duration);
     }
     
@@ -91,22 +89,17 @@ class NotificationManager {
         return this.show(message, 'error', duration);
     }
     
-    warning(message, duration = 4000) {
+    warning(message, duration = 5000) {
         return this.show(message, 'warning', duration);
     }
     
-    info(message, duration = 3000) {
+    info(message, duration = 5000) {
         return this.show(message, 'info', duration);
     }
 }
 
 // Создаем глобальный экземпляр
 const notificationManager = new NotificationManager();
-
-// Заменяем старую функцию showNotification на новую
-function showNotification(message, type = 'info') {
-    notificationManager.show(message, type);
-}
 
 function init() {
     // Создаем карту
@@ -115,6 +108,8 @@ function init() {
         zoom: 10,
         controls: ['zoomControl'],
     });
+
+    
 
     // Создаем коллекцию для меток
     myCollection = new ymaps.GeoObjectCollection();
@@ -125,15 +120,15 @@ function init() {
 
     // Добавляем обработчик клика по карте для выбора координат
     myMap.events.add('click', function (e) {
-        console.log('Клик по карте, isSelectingMode:', isSelectingMode); // для отладки
+        console.log('Клик по карте, isSelectingMode:', isSelectingMode);
         
         if (isSelectingMode) {
             selectedCoords = e.get('coords');
-            console.log('Координаты выбраны:', selectedCoords); // для отладки
+            console.log('Координаты выбраны:', selectedCoords);
             
             updateCoordsDisplay();
             
-            // Создаем временную метку для preview
+            //Создаем временную метку для preview
             if (tempPlacemark) {
                 myMap.geoObjects.remove(tempPlacemark);
             }
@@ -150,25 +145,27 @@ function init() {
                 selectedCoords = tempPlacemark.geometry.getCoordinates();
                 updateCoordsDisplay();
             });
-            
+
             // Показываем уведомление об успешном выборе
-            notificationManager.success('Координаты выбраны! Заполните форму и сохраните метку.');
+            notificationManager.success('Место выбрано! Заполните информацию о метке', 10);
             
-            // ОТКРЫВАЕМ ФОРМУ СРАЗУ после выбора координат
-            openFormModal();
+            // Открываем форму после небольшой задержки
+            setTimeout(() => {
+                openFormModal();
+            }, 500);
             
-            // ВЫКЛЮЧАЕМ режим выбора только после открытия формы
+            // Выключаем режим выбора
             isSelectingMode = false;
         }
     });
 }
 
 function openAddForm() {
-    console.log('openAddForm вызван'); // для отладки
+    console.log('openAddForm вызван');
     
     // Всегда включаем режим выбора координат при нажатии кнопки
     isSelectingMode = true;
-    selectedCoords = null; // Сбрасываем предыдущие координаты
+    selectedCoords = null;
     
     // Сбрасываем временную метку если есть
     if (tempPlacemark) {
@@ -180,17 +177,17 @@ function openAddForm() {
     document.getElementById('coordLat').textContent = 'не выбраны';
     document.getElementById('coordLng').textContent = 'не выбраны';
     
-    notificationManager.info('Кликните на карте для выбора места метки');
+    // Показываем уведомление
+    notificationManager.info('Кликните на карте для выбора места метки', 5000);
 }
 
 function openFormModal() {
-    console.log('openFormModal вызван'); // для отладки
+    console.log('openFormModal вызван');
     document.getElementById('addFormModal').style.display = 'block';
 }
 
 function closeAddForm() {
     document.getElementById('addFormModal').style.display = 'none';
-    // НЕ сбрасываем режим выбора здесь, только при сохранении или отмене
 }
 
 function updateCoordsDisplay() {
@@ -239,7 +236,7 @@ function savePlacemark() {
         const reader = new FileReader();
         
         reader.onload = function(e) {
-            uploadedPhoto = e.target.result; // Сохраняем base64
+            uploadedPhoto = e.target.result;
             createAndSavePlacemark(name, description, uploadedPhoto);
         };
         
@@ -249,13 +246,12 @@ function savePlacemark() {
         
         reader.readAsDataURL(file);
     } else {
-        // Если фото не выбрано
         createAndSavePlacemark(name, description, null);
     }
 }
 
 function createAndSavePlacemark(name, description, photoSource) {
-    // Создаем содержимое для балуна (без balloonContentHeader)
+    // Создаем содержимое для балуна
     let balloonContent = `
         <div class="placemark-balloon">
             <div class="placemark-title">${name}</div>
@@ -279,7 +275,7 @@ function createAndSavePlacemark(name, description, photoSource) {
         tempPlacemark = null;
     }
 
-    // Создаем постоянную метку (без balloonContentHeader)
+    // Создаем постоянную метку
     const placemark = new ymaps.Placemark(selectedCoords, {
         balloonContent: balloonContent,
         hintContent: name
@@ -287,7 +283,7 @@ function createAndSavePlacemark(name, description, photoSource) {
         preset: 'islands#greenDotIcon',
         balloonCloseButton: true,
         hideIconOnBalloonOpen: false,
-        draggable: true
+        draggable: false
     });
 
     // Сохраняем данные метки
@@ -340,33 +336,13 @@ function createAndSavePlacemark(name, description, photoSource) {
     document.getElementById('placemarkForm').reset();
     uploadedPhoto = null;
     selectedCoords = null;
-    isSelectingMode = false; // Сбрасываем режим выбора после сохранения
+    isSelectingMode = false;
     
     // Закрываем форму
     closeAddForm();
 
     // Показываем уведомление об успехе
     notificationManager.success(`Метка "${name}" успешно добавлена!`);
-}
-
-function clearAllPlacemarks() {
-    if (confirm('Вы уверены, что хотите удалить все метки?')) {
-        // Удаляем метки с карты
-        myCollection.removeAll();
-        
-        // Очищаем localStorage
-        localStorage.removeItem('placemarks');
-        
-        // Сбрасываем временные переменные
-        selectedCoords = null;
-        isSelectingMode = false;
-        if (tempPlacemark) {
-            myMap.geoObjects.remove(tempPlacemark);
-            tempPlacemark = null;
-        }
-        
-        notificationManager.info('Все метки удалены!');
-    }
 }
 
 // Обработчик кнопки "Отмена" в форме
@@ -378,7 +354,7 @@ function cancelForm() {
         myMap.geoObjects.remove(tempPlacemark);
         tempPlacemark = null;
     }
-    notificationManager.info('Добавление метки отменено');
+    notificationManager.info('Добавление объекта отменено');
 }
 
 // Остальные функции без изменений
@@ -413,14 +389,13 @@ function loadSavedPlacemarks() {
     const savedPlacemarks = JSON.parse(localStorage.getItem('placemarks')) || [];
     
     savedPlacemarks.forEach(data => {
-        // Создаем метку без balloonContentHeader
         const placemark = new ymaps.Placemark(data.coords, {
             balloonContent: data.balloonContent,
             hintContent: data.name
         }, {
             preset: 'islands#greenDotIcon',
             balloonCloseButton: true,
-            draggable: true
+            draggable: false
         });
 
         placemark.userData = data;
@@ -430,7 +405,6 @@ function loadSavedPlacemarks() {
             const newCoords = placemark.geometry.getCoordinates();
             data.coords = newCoords;
             
-            // Обновляем балун с новыми координатами
             const updatedBalloonContent = data.balloonContent.replace(
                 /Координаты: [^<]+/,
                 `Координаты: ${newCoords[0].toFixed(6)}, ${newCoords[1].toFixed(6)}`

@@ -96,7 +96,7 @@ body {
 
 .coords-display {
     padding: 8px;
-    background-color: #ffffff;
+    background-color: #f5f5f5;
     border-radius: 4px;
     font-family: monospace;
 }
@@ -116,7 +116,7 @@ body {
 }
 
 .form-buttons button:first-child {
-    background-color: #ae1010;
+    background-color: #6c757d;
     color: white;
 }
 
@@ -159,24 +159,27 @@ body {
 }
 
 /* Стили для всплывающих уведомлений */
-.notification {
+#notification-container {
     position: fixed;
     top: 20px;
     right: 20px;
-    padding: 15px 25px;
-    background: #4CAF50;
-    color: white;
+    z-index: 10000;
+}
+
+.notification {
+    position: relative;
+    padding: 15px 40px 15px 20px;
+    margin-bottom: 10px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     font-family: Arial, sans-serif;
     font-size: 14px;
     font-weight: 500;
-    z-index: 10000;
+    max-width: 300px;
+    word-wrap: break-word;
     opacity: 0;
     transform: translateX(100%);
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    max-width: 300px;
-    word-wrap: break-word;
 }
 
 .notification.show {
@@ -192,23 +195,26 @@ body {
 /* Варианты стилей для разных типов уведомлений */
 .notification.success {
     background: #4CAF50;
+    color: white;
     border-left: 4px solid #2E7D32;
 }
 
 .notification.error {
     background: #f44336;
+    color: white;
     border-left: 4px solid #c62828;
 }
 
 .notification.warning {
     background: #ff9800;
-    border-left: 4px solid #ef6c00;
     color: #333;
+    border-left: 4px solid #ef6c00;
 }
 
 .notification.info {
-    background: #850a85;
-    border-left: 4px solid #350335;
+    background: #8c2c99;
+    color: white;
+    border-left: 4px solid rgb(70, 8, 54);
 }
 
 /* Иконка закрытия */
@@ -218,44 +224,23 @@ body {
     right: 10px;
     background: none;
     border: none;
-    color: white;
+    color: inherit;
     font-size: 16px;
     cursor: pointer;
     opacity: 0.7;
     transition: opacity 0.2s;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .notification-close:hover {
     opacity: 1;
 }
 
-@keyframes slideIn {
-    from {
-        top: -100px;
-        opacity: 0;
-    }
-    to {
-        top: 20px;
-        opacity: 1;
-    }
-}
-
-@keyframes slideOut {
-    from {
-        top: 20px;
-        opacity: 1;
-    }
-    to {
-        top: -100px;
-        opacity: 0;
-    }
-}
-
-.notification.show {
-    display: block;
-    animation: slideIn 0.3s ease-out;
-}
-
-.notification.hide {
-    animation: slideOut 0.3s ease-in;
+.notification-content {
+    margin-right: 10px;
 }

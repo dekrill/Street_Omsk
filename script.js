@@ -83,7 +83,7 @@ class NotificationManager {
     }
     
     // Быстрые методы для разных типов уведомлений
-    success(message, duration = 3000) {
+    success(message, duration = 10000) {
         return this.show(message, 'success', duration);
     }
     
@@ -140,7 +140,7 @@ function init() {
             
             tempPlacemark = new ymaps.Placemark(selectedCoords, {}, {
                 preset: 'islands#blueDotIcon',
-                draggable: true
+                draggable: false
             });
             
             myMap.geoObjects.add(tempPlacemark);
@@ -150,10 +150,7 @@ function init() {
                 selectedCoords = tempPlacemark.geometry.getCoordinates();
                 updateCoordsDisplay();
             });
-            
-            // Показываем уведомление об успешном выборе
-            notificationManager.success('Координаты выбраны! Заполните форму и сохраните метку.');
-            
+
             // ОТКРЫВАЕМ ФОРМУ СРАЗУ после выбора координат
             openFormModal();
             
@@ -287,7 +284,7 @@ function createAndSavePlacemark(name, description, photoSource) {
         preset: 'islands#greenDotIcon',
         balloonCloseButton: true,
         hideIconOnBalloonOpen: false,
-        draggable: true
+        draggable: false
     });
 
     // Сохраняем данные метки
@@ -349,26 +346,6 @@ function createAndSavePlacemark(name, description, photoSource) {
     notificationManager.success(`Метка "${name}" успешно добавлена!`);
 }
 
-function clearAllPlacemarks() {
-    if (confirm('Вы уверены, что хотите удалить все метки?')) {
-        // Удаляем метки с карты
-        myCollection.removeAll();
-        
-        // Очищаем localStorage
-        localStorage.removeItem('placemarks');
-        
-        // Сбрасываем временные переменные
-        selectedCoords = null;
-        isSelectingMode = false;
-        if (tempPlacemark) {
-            myMap.geoObjects.remove(tempPlacemark);
-            tempPlacemark = null;
-        }
-        
-        notificationManager.info('Все метки удалены!');
-    }
-}
-
 // Обработчик кнопки "Отмена" в форме
 function cancelForm() {
     closeAddForm();
@@ -378,7 +355,7 @@ function cancelForm() {
         myMap.geoObjects.remove(tempPlacemark);
         tempPlacemark = null;
     }
-    notificationManager.info('Добавление метки отменено');
+    notificationManager.info('Добавление объекта отменено');
 }
 
 // Остальные функции без изменений
@@ -420,7 +397,7 @@ function loadSavedPlacemarks() {
         }, {
             preset: 'islands#greenDotIcon',
             balloonCloseButton: true,
-            draggable: true
+            draggable: false
         });
 
         placemark.userData = data;

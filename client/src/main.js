@@ -29,17 +29,18 @@ let tempPlacemark = null;
 let currentUser = null;
 let nextPlacemarkId = 3;
 
-document.addEventListener('DOMContentLoaded', function() {
-    init();
+document.addEventListener('DOMContentLoaded', async function() {
+    await init();
 });
 
+const api = new Api();
 const notificationManager = new NotificationManager();
 
-function init() {
+async function init() {
     const user = localStorage.getItem('currentUser');
 
     if (!user) {
-        initAuth();
+        await initAuth();
         return;
     }
 

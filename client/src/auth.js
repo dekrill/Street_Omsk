@@ -1,12 +1,12 @@
-function initAuth() {
-    document.getElementById('authForm').addEventListener('submit', function(e) {
+async function initAuth() {
+    document.getElementById('authForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-        login();
+        await login();
     });
 
-    document.getElementById('registerFormElement').addEventListener('submit', function(e) {
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-        register();
+        await register();
     });
 
     showAuthModal();
@@ -21,7 +21,7 @@ function closeAuthModal() {
     document.getElementById('authModal').style.display = 'none';
 }
 
-function login() {
+async function login() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
@@ -30,26 +30,19 @@ function login() {
         return;
     }
 
-    const testUsers = {
-        'admin': { password: 'admin123', name: 'Администратор' },
-        'user': { password: 'user123', name: 'Иван Иванов' }
-    };
-
-    if (testUsers[username] && testUsers[username].password === password) {
-        currentUser = {
-            username: username,
-            name: testUsers[username].name
-        };
-        
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        showMainApp();
-        notificationManager.success(`Добро пожаловать, ${currentUser.name}!`);
-    } else {
-        notificationManager.error('Неверный логин или пароль');
-    }
+    await api.post('/api/auth/login', {username: username, password: password})
+        .then(response => {
+            if (response.ok) {
+                showMainApp();
+                notificationManager.success(`Добро пожаловать!`);
+            } else if (response.status == 401) {
+                notificationManager.error('Неверный логин или пароль');
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }
 
-function register() {
+async function register() {
     const username = document.getElementById('regUsername').value;
     const password = document.getElementById('regPassword').value;
     const name = document.getElementById('regName').value;
@@ -72,13 +65,23 @@ function register() {
 
     currentUser = {
         username: username,
+        password: password,
         name: name,
         email: email
     };
-    
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    notificationManager.success('Регистрация успешна!');
-    showMainApp();
+
+    await api.post('/api/auth/register', currentUser)
+        .then(response => {
+            if (response.status == 201) {
+                showMainApp();
+                notificationManager.success('Регистрация успешна!');
+            } else if (response.status == 401) {
+                notificationManager.error('Неверный логин или пароль');
+            }
+            return response.json()
+        })
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
 }
 
 function logout() {
@@ -97,4 +100,3 @@ function showLoginForm() {
     document.getElementById('registerForm').style.display = 'none';
     document.getElementById('loginForm').style.display = 'block';
 }
-

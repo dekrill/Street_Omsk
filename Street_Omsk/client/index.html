@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Street Omsk</title>
+    <title>Street Art Omsk</title>
 </head>
 <body>
     <!-- Модальное окно авторизации -->
     <div id="authModal" class="modal">
         <div class="modal-content auth-content">
-            <!-- Форма входа -->
             <div id="loginForm">
+                <span class="close" onclick="closeAuthModal()">&times;</span>
                 <h2>Вход в систему</h2>
                 <form id="authForm">
                     <div class="form-group">
@@ -31,19 +31,17 @@
                 </div>
             </div>
 
-            <!-- Форма регистрации -->
             <div id="registerForm" style="display: none;">
+                <span class="close" onclick="closeAuthModal()">&times;</span>
                 <h2>Регистрация</h2>
                 <form id="registerFormElement">
                     <div class="form-group">
                         <label for="regUsername">Логин:*</label>
                         <input type="text" id="regUsername" required>
-                        <small>Минимум 3 символа</small>
                     </div>
                     <div class="form-group">
                         <label for="regPassword">Пароль:*</label>
                         <input type="password" id="regPassword" required>
-                        <small>Минимум 6 символов</small>
                     </div>
                     <div class="form-group">
                         <label for="regName">Имя:*</label>
@@ -84,7 +82,6 @@
             </button>
         </div>
 
-
         <div id="notification-container"></div>
 
         <!-- Модальное окно для добавления метки -->
@@ -105,16 +102,16 @@
                         <label for="placemarkType">Тип:</label>
                         <select id="placemarkType">
                             <option value="street">Граффити / уличное искусство</option>
-                            <option value="request">Заявка на роспись (для заказчиков)</option>
+                            <option value="request">Заявка на роспись</option>
                         </select>
                     </div>
                     <div class="form-group contact-fields" style="display: none;">
-                        <label for="placemarkPhone">Телефон (для заявок):</label>
-                        <input type="tel" id="placemarkPhone" placeholder="+7 (999) 123-45-67">
+                        <label for="placemarkPhone">Телефон:</label>
+                        <input type="tel" id="placemarkPhone">
                     </div>
                     <div class="form-group contact-fields" style="display: none;">
-                        <label for="placemarkTelegram">Telegram username (без @):</label>
-                        <input type="text" id="placemarkTelegram" placeholder="ivan_ivanov">
+                        <label for="placemarkTelegram">Telegram:</label>
+                        <input type="text" id="placemarkTelegram">
                     </div>
                     <div class="form-group">
                         <label>Координаты:</label>
@@ -124,7 +121,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="placemarkPhoto">Фото (опционально):</label>
+                        <label for="placemarkPhoto">Фото:</label>
                         <input type="file" id="placemarkPhoto" accept="image/*">
                     </div>
                     <div class="form-buttons">

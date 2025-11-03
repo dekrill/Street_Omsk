@@ -1,18 +1,41 @@
+:root {
+    --primary-bg: #ffffff;
+    --secondary-bg: #f8f9fa;
+    --accent-color: #007AFF;
+    --accent-hover: #0056CC;
+    --text-primary: #1D1D1F;
+    --text-secondary: #86868B;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --success-color: #34C759;
+    --error-color: #FF3B30;
+    --warning-color: #FF9500;
+    --info-color: #5856D6;
+    --border-radius: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #B3F4B1;
-    font-family: Arial, sans-serif;
+    background: #F2F2F7;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-primary);
 }
 
-/* Шапка с информацией пользователя */
 .header {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 10px 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background: var(--primary-bg);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .user-info {
@@ -25,119 +48,67 @@ body {
 
 #userGreeting {
     font-weight: 600;
-    color: #2c3e50;
+    font-size: 18px;
 }
 
 .logout-btn {
-    background: #e74c3c;
+    background: var(--error-color);
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
+    padding: 12px 24px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 500;
     transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
-    background: #c0392b;
+    background: #D70015;
     transform: translateY(-1px);
 }
 
 .map-container {
     position: relative;
-    width: 80%;
-    height: 75vh; /* Высота минус шапка и отступы */
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    align-items:center;
+    width: 98%;
+    height: 82vh;
+    margin: 12px auto;
+    flex: 1;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-medium);
 }
 
 #map {
     width: 100%;
     height: 100%;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: var(--border-radius);
 }
 
-
-.map-button:hover {
-    background: #dca7ee;
-    transform: translateX(-50%) translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-/* Нижнее меню - стеклянный эффект */
 .map-button {
-    background: #D78FEE;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(138, 14, 166, 0.787);
-    border-radius: 25px;
-    box-shadow: 
-        0 8px 32px rgba(195, 194, 194, 0.54),
-        inset 0 1px 0 rgba(191, 184, 184, 0.758);
-    margin: 0 auto 20px auto;
-    width: 220px;
+    background: var(--accent-color);
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
+    width: 240px;
     position: absolute;
-    bottom: 20px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    padding: 12px 24px;
-    font-size: 20px;
-}
-
-.menu-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 auto;
-    gap: 6px;
-}
-
-.menu-option {
-    background: rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    padding: 12px 10px;
-    border-radius: 20px;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
     cursor: pointer;
-    transition: all 0.4s ease;
-    color: #2c3e50;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    flex: 1;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
-.menu-option:hover {
-    background: rgba(255, 255, 255, 0.4);
-    border-color: rgba(255, 255, 255, 0.6);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+.map-button:hover {
+    background: var(--accent-hover);
+    transform: translateX(-50%) translateY(-2px);
 }
 
-.menu-option.active {
-    background: rgba(255, 255, 255, 0.8);
-    border-color: rgba(255, 255, 255, 0.9);
-    color: #1a237e;
-    box-shadow: 
-        0 4px 20px rgba(76, 175, 80, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    transform: translateY(-1px);
-}
-
-.menu-text {
-    font-weight: 600;
-    position: relative;
-    z-index: 1;
-}
-
-/* Стили для модального окна */
 .modal {
     display: none;
     position: fixed;
@@ -146,175 +117,123 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background: var(--primary-bg);
     margin: 5% auto;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
+    padding: 32px;
+    border-radius: var(--border-radius);
+    width: 90%;
     max-width: 500px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-}
-
-.auth-content {
-    max-width: 400px;
-}
-
-.auth-info {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 5px;
-    font-size: 14px;
-    border-left: 4px solid #4CAF50;
-}
-
-.auth-info p {
-    margin: 5px 0;
+    box-shadow: var(--shadow-medium);
 }
 
 .close {
-    color: #aaa;
+    color: var(--text-secondary);
     float: right;
     font-size: 28px;
-    font-weight: bold;
+    font-weight: 300;
     cursor: pointer;
 }
 
 .close:hover {
-    color: #000;
+    color: var(--text-primary);
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-weight: 600;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     box-sizing: border-box;
+    background: var(--secondary-bg);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-color);
 }
 
 .coords-display {
-    padding: 8px;
-    background-color: #f5f5f5;
-    border-radius: 4px;
+    padding: 12px;
+    background: var(--secondary-bg);
+    border-radius: 8px;
     font-family: monospace;
+    color: var(--text-secondary);
 }
 
 .form-buttons {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 24px;
+    gap: 12px;
 }
 
 .form-buttons button {
-    padding: 10px 20px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 600;
     transition: all 0.3s ease;
+    flex: 1;
 }
 
 .form-buttons button:first-child {
-    background-color: #6c757d;
+    background: var(--text-secondary);
     color: white;
 }
 
 .form-buttons button:last-child {
-    background-color: #4CAF50;
+    background: var(--accent-color);
     color: white;
 }
 
 .form-buttons button:hover {
-    opacity: 0.9;
     transform: translateY(-1px);
 }
 
-/* Стили для балуна метки */
-.placemark-balloon {
-    max-width: 300px;
+.auth-info {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--secondary-bg);
+    border-radius: 8px;
+    font-size: 14px;
+    border-left: 4px solid var(--accent-color);
 }
 
-.placemark-photo {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 10px;
+.auth-links {
+    margin-top: 15px;
+    text-align: center;
 }
 
-.placemark-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.placemark-description {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.placemark-coords {
-    color: #666;
-    font-size: 11px;
-    font-family: monospace;
-}
-
-.placemark-author {
-    font-size: 12px;
-    color: #777;
-    margin-top: 8px;
-    border-top: 1px solid #eee;
-    padding-top: 6px;
-}
-
-.placemark-type {
-    display: inline-block;
-    padding: 4px 12px;
-    background: #4CAF50;
-    color: white;
-    border-radius: 15px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.placemark-type[data-type="request"] {
-    background: #9c27b0;
-}
-
-.placemark-contacts {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed #ccc;
-    font-size: 13px;
-}
-
-.placemark-contacts a {
-    color: #1a73e8;
+.auth-links a {
+    color: var(--accent-color);
     text-decoration: none;
+    font-weight: 500;
 }
 
-.placemark-contacts a:hover {
+.auth-links a:hover {
     text-decoration: underline;
 }
 
-/* Стили для всплывающих уведомлений */
 #notification-container {
     position: fixed;
     top: 20px;
@@ -323,63 +242,50 @@ body {
 }
 
 .notification {
-    position: relative;
     padding: 15px 20px;
     margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    font-family: Arial, sans-serif;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
     font-size: 14px;
     font-weight: 500;
     max-width: 300px;
-    word-wrap: break-word;
 }
 
 .notification.success {
-    background: #4CAF50;
+    background: var(--success-color);
     color: white;
 }
 
 .notification.error {
-    background: #f44336;
+    background: var(--error-color);
     color: white;
 }
 
 .notification.warning {
-    background: #ff9800;
-    color: #333;
-}
-
-.notification.info {
-    background: #2196F3;
+    background: var(--warning-color);
     color: white;
 }
 
-/* Адаптивность для мобильных устройств */
+.notification.info {
+    background: var(--info-color);
+    color: white;
+}
+
 @media (max-width: 768px) {
     .map-container {
-        width: 95%;
-        height: 70vh;
+        width: 96%;
+        height: 75vh;
     }
     
-    .bottom-menu {
-        width: 280px;
-        padding: 10px;
-    }
-    
-    .menu-option {
-        padding: 10px 8px;
-        font-size: 12px;
+    .map-button {
+        width: 220px;
+        padding: 14px 28px;
+        font-size: 16px;
     }
     
     .modal-content {
         margin: 10% auto;
-        width: 90%;
-    }
-    
-    .user-info {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
+        width: 94%;
+        padding: 24px;
     }
 }

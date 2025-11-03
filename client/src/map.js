@@ -8,6 +8,8 @@ function initMap() {
     myCollection = new ymaps.GeoObjectCollection();
     myMap.geoObjects.add(myCollection);
 
+    loadPlacemarks();
+
     document.getElementById('placemarkType').addEventListener('change', function() {
         const isRequest = this.value === 'request';
         const contactFields = document.querySelectorAll('.contact-fields');
@@ -16,8 +18,7 @@ function initMap() {
         });
     });
 
-    loadPlacemarks();
-
+    
     myMap.events.add('click', function (e) {
         if (isSelectingMode) {
             selectedCoords = e.get('coords');
@@ -70,6 +71,16 @@ function addPlacemarkToMap(placemarkData) {
             <div class="placemark-description">${placemarkData.description || 'Описание отсутствует'}</div>
     `;
 
+    
+
+    if (placemarkData.photo) {
+        balloonContent += `
+            <div class="placemark-photo">
+                <img src="${placemarkData.photo}" alt="Фото метки" onclick="openPhotoModal('${placemarkData.photo}')">
+            </div>
+        `;
+    }
+
     if (placemarkData.type === 'request') {
         balloonContent += `<div class="placemark-contacts"><strong>Контакты:</strong><br>`;
         if (placemarkData.phone) {
@@ -97,19 +108,23 @@ function addPlacemarkToMap(placemarkData) {
 
     const placemark = new ymaps.Placemark(
         [placemarkData.lat, placemarkData.lng],
-        { balloonContent, hintContent: placemarkData.name },
+        {balloonContent, hintContent: placemarkData.name,},
+        
         {
             iconLayout: 'default#image',
             iconImageHref: getIconForType(placemarkData.type),
             iconImageSize: [32, 32],
             iconImageOffset: [-16, -16],
-        balloonCloseButton: true
-        }
-    );
+            balloonCloseButton: true
+        });
+        
+
 
     placemark.userData = placemarkData;
     myCollection.add(placemark);
 }
+
+
 
 function openAddForm() {
     isSelectingMode = true;
@@ -132,6 +147,7 @@ function openFormModal() {
 
 function closeAddForm() {
     document.getElementById('addFormModal').style.display = 'none';
+    uploadPhoto = null;
     isSelectingMode = false;
     selectedCoords = null;
     if (tempPlacemark) {
@@ -177,8 +193,11 @@ function savePlacemark() {
         type,
         lat: selectedCoords[0],
         lng: selectedCoords[1],
-        authorName: currentUser.name
+        authorName: currentUser.name,
+        photo: uploadPhoto
     };
+
+    console.log('Данные метки:', placemarkData);
 
     if (type === 'request') {
         placemarkData.phone = phone;
@@ -189,6 +208,7 @@ function savePlacemark() {
     addPlacemarkToMap(placemarkData);
     
     document.getElementById('placemarkForm').reset();
+    uploadPhoto = null;
     document.querySelectorAll('.contact-fields').forEach(el => el.style.display = 'none');
     closeAddForm();
 
@@ -207,3 +227,27 @@ window.onclick = function(event) {
         }
     });
 }
+
+//Обработка фоточек
+function handlePhoto(input){
+    const file = input.files[0];
+    const preview = document.getElementById('photoPreview');
+
+    if (!file.type.match('image.*')){
+        alert('Пожалуйста, выберите фотографию');
+        input.value = '';
+        return; 
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+        uploadPhoto = e.target.result;
+    }
+
+    reader.readAsDataURL(file);
+    
+}
+
+
+

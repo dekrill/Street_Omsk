@@ -1,26 +1,49 @@
 let placemarksData = [
     {
         id: 1,
-        name: "Яркая стена на Ленина",
-        description: "Большое граффити на торце здания",
+        name: "Граффити на здании МЕГА",
+        description: "Очень большое и красивый рисунок",
         type: "street",
-        lat: 54.991553,
-        lng: 73.368741,
-        authorName: "user"
-    },
+        lat: 54.971793, 
+        lng: 73.287233,
+        authorName: "VasyaPupkin",
+        photo: "images/g2.jpg",
+    }, 
     {
         id: 2,
-        name: "Нужна роспись фасада кафе",
-        description: "Ищем художника для росписи фасада нового кафе",
+        name: "Стикеры на ленина",
+        description: "Капец забомбили столб мне нравится!!!",
+        type: "street",
+        lat: 54.984475,
+        lng: 73.375691,
+        authorName: "kiruha",
+        photo: "images/g3.jpg"
+    }, 
+    {
+        id: 3,
+        name: "Гараж раскрасить",
+        description: "Раскрасьте гараж уже не могу страшный до ужаса!!!!!",
         type: "request",
-        lat: 54.988421,
-        lng: 73.374562,
+        lat: 55.032979,
+        lng: 73.438207,  
         phone: "+7 (999) 123-45-67",
-        telegram: "cafe_owner",
-        authorName: "user"
+        telegram: "petrovich",
+        authorName: "Petr1973RUS",
+        photo: "images/garaj.jpg"
+    },
+    {
+        id: 3,
+        name: "Ковид19",
+        description: "Врачам внатуре респект",
+        type: "street",
+        lat: 54.976421,
+        lng: 73.296961,  
+        authorName: "Просто Дима",
+        photo: "images/1g.jpg"
     }
 ];
 
+let uploadPhoto = null;
 let myMap;
 let myCollection;
 let selectedCoords = null;

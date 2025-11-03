@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Карта событий Омска</title>
+    <title>Street Omsk</title>
 </head>
 <body>
     <!-- Модальное окно авторизации -->
@@ -80,24 +80,10 @@
         <div class="map-container">
             <div id="map"></div>
             <button class="map-button add-button" onclick="openAddForm()">
-                Добавить объект
+                Добавить метку
             </button>
         </div>
 
-        <!-- Нижнее меню выбора -->
-        <div class="bottom-menu">
-            <div class="menu-options">
-                <button class="menu-option" data-type="event">
-                    <span class="menu-text">EVENT</span>
-                </button>
-                <button class="menu-option" data-type="street">
-                    <span class="menu-text">STREET</span>
-                </button>
-                <button class="menu-option active" data-type="request">
-                    <span class="menu-text">ЗАПРОСЫ</span>
-                </button>
-            </div>
-        </div>
 
         <div id="notification-container"></div>
 
@@ -118,7 +104,6 @@
                     <div class="form-group">
                         <label for="placemarkType">Тип:</label>
                         <select id="placemarkType">
-                            <option value="event">Событие или мероприятие</option>
                             <option value="street">Граффити / уличное искусство</option>
                             <option value="request">Заявка на роспись (для заказчиков)</option>
                         </select>
@@ -143,7 +128,6 @@
                         <input type="file" id="placemarkPhoto" accept="image/*">
                     </div>
                     <div class="form-buttons">
-                        <button type="button" onclick="cancelForm()">Отмена</button>
                         <button type="submit">Сохранить объект</button>
                     </div>
                 </form>

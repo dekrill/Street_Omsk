@@ -264,7 +264,7 @@ class MapHandler(BaseHTTPRequestHandler):
         user = self.db.login(username, password)
         if user:
             self.send_json_response({
-                'success': True,  # ←←← КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ!
+                'success': True,
                 'token': f"token-{user['id']}-{user['username']}",
                 'user': user
             })

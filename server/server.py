@@ -240,6 +240,8 @@ class MapHandler(BaseHTTPRequestHandler):
             self.send_json_response({'success': False, 'message': 'Password must be at least 6 characters'}, 400)
             return
 
+        password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+
         success, message = self.db.register_user(username, password, name, email)
         if success:
             self.send_json_response({
@@ -260,8 +262,9 @@ class MapHandler(BaseHTTPRequestHandler):
             return
 
         username = data.get('username')
-        password = data.get('password')
+        password = hashlib.sha256(data.get('password').encode('utf-8')).hexdigest()
         user = self.db.login(username, password)
+
         if user:
             self.send_json_response({
                 'success': True,
